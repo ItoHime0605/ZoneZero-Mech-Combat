@@ -1,44 +1,30 @@
 package com.eviesaurr.sablemobinteractions.sublevel;
 
 import com.eviesaurr.sablemobinteractions.config.Config;
-import com.eviesaurr.sablemobinteractions.ModTags;
+import com.eviesaurr.sablemobinteractions.health.MechHealth;
+import com.eviesaurr.sablemobinteractions.health.WalkerLocator;
 import dev.ryanhcode.sable.sublevel.SubLevel;
-import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-
-import java.util.Map;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.core.BlockPos;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Prototype from upstream v1.0.1: each physical armor block is damaged by hits.
- * Shared mech HP is NOT implemented in this revision.
- */
-public class BlockBreakTracker {
-    private static final Map<UUID, Map<BlockPos, Integer>> hitCounts = new ConcurrentHashMap<>();
-
-    public static boolean registerHit(SubLevel subLevel, BlockPos localPos, Entity source) {
-        if (subLevel == null || subLevel.isRemoved() || source == null) return false;
-        var subLevelHits = hitCounts.computeIfAbsent(subLevel.getUniqueId(), id -> new ConcurrentHashMap<>());
-        int hits = subLevelHits.merge(localPos, 1, Integer::sum);
-        BlockPos rawPos = SubLevelInteraction.toRawBlockPos(subLevel, localPos);
-        // Never destroy walker cores in the prototype: core failure needs a proper HP system.
-        if (source.level().getBlockState(rawPos).is(ModTags.SHIP_ESSENTIAL_BLOCKS)) {
-            subLevelHits.remove(localPos);
-            return false;
-        }
-        int hitsNeeded = Config.BASE_HITS_TO_BREAK.get();
-        int stage = Math.min(9, (hits * 10) / hitsNeeded);
-        source.level().destroyBlockProgress(source.getId(), rawPos, stage);
-        if (hits >= hitsNeeded) {
-            source.level().destroyBlock(rawPos, true, source);
-            subLevelHits.remove(localPos);
-            return true;
-        }
-        return false;
+/** Converts an armor BLOCK hit to SHARED walker HP damage; never destroys blocks. */
+public final class BlockBreakTracker {
+    private BlockBreakTracker() { }
+    public static boolean registerHit(SubLevel section, BlockPos localPos, Entity source) {
+        if (source == null || !(source.level() instanceof ServerLevel level)) return false;
+        var walker = WalkerLocator.resolve(level, section);
+        if (walker.isEmpty()) return false;
+        double attack = source instanceof LivingEntity living
+            ? living.getAttributeValue(Attributes.ATTACK_DAMAGE) : 1.0;
+        int damage = Math.max(1, (int) Math.ceil(Math.max(0, attack) * Config.DAMAGE_MULTIPLIER.get()));
+        MechHealth.Status after = MechHealth.damage(level, walker.get(), damage);
+        return after.hp() <= 0;
     }
 
-    public static void clearSubLevel(UUID subLevelId) {
-        hitCounts.remove(subLevelId);
-    }
+    /** Legacy v1.0.1 callsite compatibility; shared HP is persisted in Sable. */
+    public static void clearSubLevel(UUID sectionId) { }
 }

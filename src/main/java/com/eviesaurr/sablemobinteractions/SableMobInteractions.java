@@ -19,6 +19,7 @@ public class SableMobInteractions {
         LOGGER.info("ZoneZero Mech Combat initializing");
         container.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
         modEventBus.addListener(this::registerAttributes);
     }
 

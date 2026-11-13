@@ -91,6 +91,8 @@ dependencies {
     // Do not commit binary JAR files to GitHub.
     compileOnly files("libs/sable.jar")
     compileOnly files("libs/sable-companion.jar")
+    compileOnly files("libs/create.jar")
+    compileOnly files("libs/let_it_walk.jar")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
