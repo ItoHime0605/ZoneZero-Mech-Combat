@@ -104,8 +104,8 @@ public class SubLevelInteraction {
         double nearestDistSqr = radius * radius;
 
         for (SubLevel subLevel : container.queryIntersecting(searchBox)) {
-            if (Config.REQUIRE_SHIP_ESSENTIAL_BLOCKS.get()
-                    && !ShipDetectionCache.isShip(level, subLevel, level.getGameTime())) continue;
+            // Mandatory: non-walker Sable sublevels must never be targeted.
+            if (!ShipDetectionCache.isShip(level, subLevel, level.getGameTime())) continue;
             if (!NearbyPlayerCache.hasNearbyPlayer(level, subLevel, level.getGameTime())) continue;
             for (var holder : subLevel.getPlot().getLoadedChunks()) {
                 var chunk = holder.getChunk();
