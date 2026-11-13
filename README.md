@@ -1,12 +1,14 @@
 # ZoneZero Mech Combat｜零號禁區・機甲戰鬥
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 **Minecraft 1.21.1 / NeoForge / Sable 2.0.6 / Let It Walk! 0.1.5**
 
 專為《零號禁區》製作的實驗性模組，目標是讓殭屍能攻擊玩家組裝的步行機甲，並逐步加入機甲裝甲耐久、維修與受損回饋。
 
 ## 開發狀態
 
-**尚未提供可供正式伺服器安裝的穩定 JAR。** 開發內容先放在獨立分支，經過編譯與遊戲實測後再合併。
+**已匯入 v0.1 原始碼，但尚未提供可安裝的 JAR。** 此分支未經 Gradle 編譯與遊戲實測，請勿放入正式伺服器。詳見 [BUILDING.md](BUILDING.md)。
 
 ### 目標
 
