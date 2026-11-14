@@ -14,11 +14,13 @@
 
 - `CapsuleLedger.java`：純 Java 交易狀態機、擁有者驗證、重複 ID 防護、重複部署防護、I/O 失敗封閉與隔離機制。
 - `CapsuleLedgerTest.java`：21 項 Java 21 測試已通過。
+- `CapsuleDiskStore.java`：伺服器世界資料夾中的原子式快照／交易檔寫入、CRC32 校驗、跨重啟讀取與單次 ID 防覆寫。
+- `CapsuleDiskStoreTest.java`：7 項 Java 21 磁碟持久化測試已通過（總計 28 項）。
 - `SableSnapshotCollector.java`：根據你現有 0.2.3 的 `WalkerLocator.Walker`，讀取 Sable 物理連結群組及完整 `SubLevelSerializer` 快照（**尚未於 NeoForge 環境編譯測試**）。只讀取、不移除任何方塊。
 
 ## 尚未完成；不得直接發行遊戲版 JAR
 
-1. 將快照以 world-local 壓縮 NBT 持久儲存並保證寫入成功／校驗。
+1. **連結持久化寫入與完整 Sable NBT 壓縮／解壓的遊戲端流程**，目前底層儲存及校驗已完成，但還沒有與模組掛鉤。
 2. 將多個 Sable plot 的載入、放置與物理連結安全還原；必須解決重新部署時原 plot 座標已被其他物件佔用的問題。
 3. 完整處理不在 Sable plot NBT 裡的外部資料、乘客／附著實體與跨維度情況。跨維度初版禁止。
 4. 操作前完成玩家／乘客、空間、世界邊界、物件大小、伺服器重啟等驗證。
@@ -33,6 +35,7 @@
 
 ```bash
 mkdir -p build/classes
-javac -d build/classes src/main/java/zonezero/mechcombat/capsule/CapsuleLedger.java src/test/java/zonezero/mechcombat/capsule/CapsuleLedgerTest.java
+javac -d build/classes src/main/java/zonezero/mechcombat/capsule/CapsuleLedger.java src/main/java/zonezero/mechcombat/capsule/CapsuleDiskStore.java src/test/java/zonezero/mechcombat/capsule/CapsuleLedgerTest.java src/test/java/zonezero/mechcombat/capsule/CapsuleDiskStoreTest.java
 java -cp build/classes zonezero.mechcombat.capsule.CapsuleLedgerTest
+java -cp build/classes zonezero.mechcombat.capsule.CapsuleDiskStoreTest
 ```
