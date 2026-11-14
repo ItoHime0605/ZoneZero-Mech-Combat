@@ -29,7 +29,8 @@ public abstract class WalkerBrainMixin {
     @Inject(method = "tick", at = @At("HEAD"), remap = false)
     private static void zonezero$disableBrokenWalker(
             WalkerCoreBlockEntity core, ServerSubLevel body, CallbackInfo callback) {
-        if (!(body.getLevel() instanceof ServerLevel level) || !core.isAssembled()) return;
+        if (!core.isAssembled()) return;
+        ServerLevel level = body.getLevel();
         var status = MechHealth.get(level, new WalkerLocator.Walker(body, core));
         if (!MechHealthMath.disabled(status.hp())) return;
         core.input = 0;
@@ -54,8 +55,8 @@ public abstract class WalkerBrainMixin {
     )
     private static double[] zonezero$localGearSpeed(
             WalkerCoreBlockEntity core, ServerSubLevel body, Pose3dc pose) {
-        if (!(body.getLevel() instanceof ServerLevel level) || !core.isAssembled())
-            return GEAR_SPEED;
+        if (!core.isAssembled()) return GEAR_SPEED;
+        ServerLevel level = body.getLevel();
         var status = MechHealth.get(level, new WalkerLocator.Walker(body, core));
         if (!MechHealthMath.slowed(status.hp(), status.maxHp())) return GEAR_SPEED;
         double factor = MechHealthMath.disabled(status.hp()) ? 0.0 : Config.SLOW_MULTIPLIER.get();

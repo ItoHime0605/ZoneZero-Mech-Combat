@@ -52,11 +52,11 @@ public final class WalkerLocator {
             double z = Math.max(bounds.minZ(), Math.min(player.getZ(), bounds.maxZ()));
             double sq = player.distanceToSqr(x, y, z);
             if (sq > bestSq) continue;
-            for (var actor : body.getPlot().getBlockEntityActors()) {
-                if (actor instanceof WalkerCoreBlockEntity core && core.isAssembled()) {
-                    best = new Walker(body, core);
-                    bestSq = sq;
-                }
+            // Any leg or foot can be repaired, not only the torso body.
+            Optional<Walker> owner = resolve(level, body);
+            if (owner.isPresent()) {
+                best = owner.get();
+                bestSq = sq;
             }
         }
         return Optional.ofNullable(best);

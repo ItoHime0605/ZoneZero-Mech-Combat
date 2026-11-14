@@ -1,29 +1,37 @@
-# Building (experimental)
+# Building ZoneZero Mech Combat (unverified)
 
-Requires **Java 21**, **Gradle**, and internet access for NeoForge and Mojang dependencies.
+**This is an experimental source branch, not an installable release.** Requires Java 21, Gradle and access to the NeoForge / Minecraft dependency repositories.
 
-Place the **original, unmodified** dependency JARs in the following local paths:
+For local compilation, place the original mod files in `libs/` as:
 
-- `libs/sable.jar` — Sable NeoForge 1.21.1 **2.0.6**
-- `libs/sable-companion.jar` — extract `META-INF/jarjar/sable-companion-common-1.21.1-1.6.0.jar` from the Sable 2.0.6 JAR
+- `libs/sable.jar` — Sable 2.0.6 NeoForge 1.21.1
+- `libs/sable-companion.jar` — Sable 2.0.6 embedded Sable Companion 1.6.0
+- `libs/create.jar` — Create 6.0.10 NeoForge 1.21.1
+- `libs/let_it_walk.jar` — Let It Walk! 0.1.5
 
-The `libs/` JARs are local compile dependencies and are intentionally **not** committed to GitHub. No separate car/vehicle libraries are required by this reduced source tree.
+The dependencies above are compile inputs, not redistributed source files. You do **not** need the newer Sable Hostile Takeover car modules, Drive-by-Wire, Offroad, Simulated, or SableCat.
 
-Run `gradle build` with a compatible Gradle version and an available dependency network. Build output would be in `build/libs/`.
+Run `gradle build` from this repository with the NeoForge ModDev environment. Only after compilation and client/server startup tests should you copy a JAR from `build/libs/` to `mods/`.
 
-**Status:** source-only prototype. No successful Gradle/NeoForge build or server test has yet been completed. Do not install in a production world.
+## Source-only tests
 
-If you also have the original Sable Mob Interactions installed, remove it before testing to avoid duplicate NPC targeting goals.
+`MechHealthMath` is a pure Java class; you can compile it with the included `MechHealthMathTest` using any Java 21 JDK, independent of Minecraft dependencies.
 
-## Intended behavior
+## Current status
 
-- Only Sable structures with a `let_it_walk:walker_core` block are attackable.
-- Vanilla zombie variants attempt to strike adjacent armor blocks.
-- `undead_revamp2` hostile mobs get a generic target; their actual attack behavior requires testing.
-- A walker core is not broken in this prototype.
-- Per-block damage is not the future shared HP system.
-- No enemy cars, hostile pilots, world-structure spawners, or additional vehicle mod dependencies.
+- [x] Sable 2.0.6 and Let It Walk 0.1.5 JAR method signatures inspected
+- [x] Shared HP + material sums + Sable user-data tag persistence source
+- [x] Mob hit rerouting to shared HP, replacing original block-breaking
+- [x] Low HP sparks and low gear speed modifier (Mixin source)
+- [x] Zero-HP movement guard (Mixin source)
+- [x] Repair item registration, right-click repair and recipe (source)
+- [x] Original upstream MIT license + NOTICE retained
+- [ ] NeoForge / Gradle compile successful
+- [ ] Mixin successfully applied at runtime
+- [ ] Damage and repair independently tested on moving multipart walkers
+- [ ] Multiplayer/saving and performance verified
+- [ ] Actual ragdoll/collapse behavior validated
 
-## Performance
+### Performance note
 
-The inherited v1.0.1 block search can scan entire sublevel chunks. Stress test against the server's five-zone zombie populations before enabling it widely.
+The v1.0.1 block nearest-target search still traverses many blocks in each Sable sublevel, so do not enable on a high-mob-count server until benchmarked.
