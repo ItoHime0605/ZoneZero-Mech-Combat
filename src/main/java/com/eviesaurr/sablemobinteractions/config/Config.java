@@ -8,6 +8,12 @@ public final class Config {
     public static final ModConfigSpec SPEC;
     public static final ModConfigSpec.DoubleValue ZOMBIE_SEARCH_RADIUS;
     public static final ModConfigSpec.DoubleValue ZOMBIE_ATTACK_RANGE;
+    public static final ModConfigSpec.BooleanValue LEG_STOMP_ENABLED;
+    public static final ModConfigSpec.DoubleValue LEG_STOMP_DAMAGE;
+    public static final ModConfigSpec.DoubleValue LEG_STOMP_KNOCKBACK;
+    public static final ModConfigSpec.DoubleValue LEG_STOMP_RADIUS;
+    public static final ModConfigSpec.DoubleValue LEG_STOMP_MIN_MOVEMENT;
+    public static final ModConfigSpec.IntValue LEG_STOMP_TARGET_COOLDOWN;
     public static final ModConfigSpec.DoubleValue GENERIC_MONSTER_SEARCH_RADIUS;
     public static final ModConfigSpec.DoubleValue PLAYER_PRESENCE_RANGE;
     public static final ModConfigSpec.DoubleValue DAMAGE_MULTIPLIER;
@@ -64,6 +70,15 @@ public final class Config {
         RECALC_TICKS = b.comment("How often loaded leg part materials are recounted.").defineInRange("rescanTicks",200,20,12000);
         REPAIR_AMOUNT = b.comment("HP restored by each successful right click.").defineInRange("repairAmount",30,1,10000);
         REPAIR_RANGE = b.comment("Maximum repair radius from walker's body in blocks.").defineInRange("repairRange",6,1,16);
+        b.pop();
+
+        b.push("leg_stomp");
+        LEG_STOMP_ENABLED = b.comment("Only an actively swinging foot can hurt hostile monsters; stationary feet never hurt mobs.").define("enabled",true);
+        LEG_STOMP_DAMAGE = b.comment("Damage in HP per foot impact; 4 HP = two hearts.").defineInRange("damage",4.0,0.0,100.0);
+        LEG_STOMP_KNOCKBACK = b.comment("Horizontal knockback applied on an actual foot hit.").defineInRange("knockback",0.6,0.0,3.0);
+        LEG_STOMP_RADIUS = b.comment("Physical collision radius (blocks) of a moving foot.").defineInRange("radius",0.85,0.25,2.0);
+        LEG_STOMP_MIN_MOVEMENT = b.comment("Minimum foot movement per tick required to count as a stomp.").defineInRange("minFootMovement",0.12,0.01,1.5);
+        LEG_STOMP_TARGET_COOLDOWN = b.comment("Per-walker and per-target impact cooldown in ticks; 20 ticks = 1 second.").defineInRange("targetCooldownTicks",20,1,100);
         b.pop();
 
         b.push("general");

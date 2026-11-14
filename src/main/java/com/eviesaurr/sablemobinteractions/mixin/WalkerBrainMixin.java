@@ -4,6 +4,7 @@ import com.eviesaurr.sablemobinteractions.config.Config;
 import com.eviesaurr.sablemobinteractions.health.MechHealth;
 import com.eviesaurr.sablemobinteractions.health.MechHealthMath;
 import com.eviesaurr.sablemobinteractions.health.WalkerLocator;
+import com.eviesaurr.sablemobinteractions.combat.MechLegImpact;
 import dev.letitwalk.content.WalkerCoreBlockEntity;
 import dev.letitwalk.walker.WalkerBrain;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
@@ -44,6 +45,14 @@ public abstract class WalkerBrainMixin {
         core.dashCarry = 0;
         core.jetPower = 0;
         core.targetVelocity.zero();
+    }
+
+    /** Runs after the real walker gait update; no per-world scan needed. */
+    @Inject(method = "tick", at = @At("TAIL"), remap = false)
+    private static void zonezero$movingFeetHitHostiles(
+            WalkerCoreBlockEntity core, ServerSubLevel body, CallbackInfo callback) {
+        if (core == null || !core.isAssembled()) return;
+        MechLegImpact.onWalkerTick(body.getLevel(), new WalkerLocator.Walker(body, core));
     }
 
     @Redirect(

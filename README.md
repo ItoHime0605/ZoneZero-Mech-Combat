@@ -73,3 +73,16 @@ _編譯成功也不代表 Mixin、客戶端圖層與專用伺服器同時驗收�
 ### 0.2.2 swarm protection
 
 A **shared 6-tick grace period** has been added to the walker itself (`health.sharedHitGraceTicks`). This caps the *aggregate* rate of valid melee hits across a crowd of zombies; it does not alter their native damage to players. The last accepted hit tick is stored in the same Sable user-data tag as HP, and repairs above 0 HP remain possible.
+
+## v0.2.3-alpha — Walking-leg impact
+
+- Only a **non-arm leg in actual SWING state** can cause a hit, and its world-space foot must move at least 0.12 blocks in consecutive ticks.
+- AABB and closest-point-to-swept-foot-segment checks reduce false hit detection around the mech.
+- Hits **hostile Monster subclasses only**; by default 4 HP impact damage, 0.6 knockback, 0.85-block foot collision radius.
+- **20 ticks (1 second) per enemy per walker**; stomping with several legs does not spam the same mob.
+- Parked / zero-HP mechs, idle feet, first-frame movement and teleports cannot inflict hits.
+- Uses the existing WalkerBrain tick tail, *not* a new world-wide 20-ticks-per-second scan.
+- These settings are adjustable in `config/zonezero_mechcombat-common.toml` under `leg_stomp`.
+- **Gameplay verification pending**: leg position on Sable sublevels, sweep hit timing, actual knockback and no phantom impacts at park/repair transitions.
+
+Automatic turret systems are separate addons, NOT included or silently installed by this update.

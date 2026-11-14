@@ -34,7 +34,14 @@ public final class MechHealthMathTest {
         eq(MechHudColors.index(21,100), 2);
         eq(MechHudColors.index(20,100), 3);
         eq(MechHudColors.index(0,100), 3);
-        System.out.println("MechHealthMath + HUD colors: ALL TESTS PASSED");
+        // A stationary foot or a teleport/time skip cannot deal stomp damage.
+        assertTrue(!LegImpactMath.isMoving(0.01, 0.12));
+        assertTrue(LegImpactMath.isMoving(0.04, 0.12));
+        assertTrue(!LegImpactMath.isValidStep(0.25, 0.12, 2));
+        assertTrue(LegImpactMath.isValidStep(0.25, 0.12, 1));
+        assertTrue(!LegImpactMath.canHit(110, 100, 20));
+        assertTrue(LegImpactMath.canHit(120, 100, 20));
+        System.out.println("MechHealthMath + HUD colors + leg stomp thresholds: ALL TESTS PASSED");
     }
     private static void eq(int a, int b) { if (a != b) throw new AssertionError(a+" != "+b); }
     private static void assertTrue(boolean yes) { if (!yes) throw new AssertionError(); }
