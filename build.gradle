@@ -31,6 +31,10 @@ repositories {
         filter { includeGroup "maven.modrinth" }
     }
     maven {
+        name = "Create Maven"
+        url = "https://maven.createmod.net"
+    }
+    maven {
         name = "CurseMaven"
         url = "https://cursemaven.com"
     }
@@ -117,6 +121,8 @@ dependencies {
     } else {
         compileOnly "maven.modrinth:LNytGWDc:UjX6dr61"  // Create 6.0.10
     }
+    // Create 6.0.10's KineticBlockEntity extends Ponder's VirtualBlockEntity.
+    compileOnly "net.createmod.ponder:ponder-neoforge:1.0.82+mc1.21.1"
     if (file("libs/let_it_walk.jar").exists()) {
         compileOnly files("libs/let_it_walk.jar")
     } else {
