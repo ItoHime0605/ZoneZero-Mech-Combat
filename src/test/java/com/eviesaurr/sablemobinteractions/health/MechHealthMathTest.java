@@ -1,5 +1,7 @@
 package com.eviesaurr.sablemobinteractions.health;
 
+import com.eviesaurr.sablemobinteractions.combat.LegImpactMath;
+
 /** Run this class with javac/java; no Minecraft dependencies. */
 public final class MechHealthMathTest {
     public static void main(String[] args) {
