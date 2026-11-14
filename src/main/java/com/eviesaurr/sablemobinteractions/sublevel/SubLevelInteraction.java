@@ -1,6 +1,7 @@
 package com.eviesaurr.sablemobinteractions.sublevel;
 
 import com.eviesaurr.sablemobinteractions.config.Config;
+import com.eviesaurr.sablemobinteractions.health.MechTargeting;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import dev.ryanhcode.sable.api.sublevel.SubLevelContainer;
 import dev.ryanhcode.sable.companion.math.BoundingBox3d;
@@ -107,6 +108,7 @@ public class SubLevelInteraction {
             // Mandatory: non-walker Sable sublevels must never be targeted.
             if (!ShipDetectionCache.isShip(level, subLevel, level.getGameTime())) continue;
             if (!NearbyPlayerCache.hasNearbyPlayer(level, subLevel, level.getGameTime())) continue;
+            if (!MechTargeting.isAttackable(level, subLevel)) continue;
             for (var holder : subLevel.getPlot().getLoadedChunks()) {
                 var chunk = holder.getChunk();
                 if (chunk == null) continue;

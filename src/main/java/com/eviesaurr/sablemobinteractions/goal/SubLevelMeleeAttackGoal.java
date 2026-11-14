@@ -1,6 +1,8 @@
 package com.eviesaurr.sablemobinteractions.goal;
 
 import com.eviesaurr.sablemobinteractions.sublevel.BlockBreakTracker;
+import com.eviesaurr.sablemobinteractions.config.Config;
+import com.eviesaurr.sablemobinteractions.health.MechTargeting;
 import com.eviesaurr.sablemobinteractions.sublevel.NearestBlockCache;
 import com.eviesaurr.sablemobinteractions.sublevel.SubLevelInteraction;
 import dev.ryanhcode.sable.sublevel.SubLevel;
@@ -40,7 +42,7 @@ public class SubLevelMeleeAttackGoal extends Goal {
                 this.mob.position(), this.searchRadius, level.getGameTime(),
                 () -> SubLevelInteraction.findNearestBlock(level, this.mob.position(), this.searchRadius)
         );
-        if (found.isEmpty()) return false;
+        if (found.isEmpty() || !MechTargeting.isAttackable(level, found.get().subLevel())) return false;
 
         this.targetSubLevel = found.get().subLevel();
         this.targetLocalPos = found.get().localPos();
@@ -52,7 +54,9 @@ public class SubLevelMeleeAttackGoal extends Goal {
         return (this.mob.getTarget() == null || !this.mob.getTarget().isAlive())
                 && this.targetSubLevel != null
                 && this.targetLocalPos != null
-                && !this.targetSubLevel.isRemoved();
+                && !this.targetSubLevel.isRemoved()
+                && this.mob.level() instanceof ServerLevel level
+                && MechTargeting.isAttackable(level, this.targetSubLevel);
     }
 
     @Override
@@ -62,6 +66,7 @@ public class SubLevelMeleeAttackGoal extends Goal {
 
     @Override
     public void stop() {
+        this.mob.getNavigation().stop();
         this.targetSubLevel = null;
         this.targetLocalPos = null;
     }
@@ -70,9 +75,17 @@ public class SubLevelMeleeAttackGoal extends Goal {
 
     @Override
     public void tick() {
+        if (!(this.mob.level() instanceof ServerLevel level)
+                || !MechTargeting.isAttackable(level, this.targetSubLevel)) {
+            abandon();
+            return;
+        }
         if (this.mob.tickCount % RETARGET_INTERVAL_TICKS == 0) {
             retargetIfBetterOptionExists();
-            if (this.targetSubLevel == null) return;
+            if (this.targetSubLevel == null || !MechTargeting.isAttackable(level, this.targetSubLevel)) {
+                abandon();
+                return;
+            }
         }
 
         Vec3 worldPos = SubLevelInteraction.localToWorld(this.targetSubLevel, this.targetLocalPos);
@@ -104,12 +117,17 @@ public class SubLevelMeleeAttackGoal extends Goal {
             return;
         }
 
-        this.attackCooldown = 10;
+        this.attackCooldown = Config.ZOMBIE_ATTACK_COOLDOWN_TICKS.get();
         this.mob.swing(InteractionHand.MAIN_HAND);
         if (BlockBreakTracker.registerHit(this.targetSubLevel, this.targetLocalPos, this.mob)) {
-            this.targetSubLevel = null;
-            this.targetLocalPos = null;
+            abandon();
         }
+    }
+
+    private void abandon() {
+        this.mob.getNavigation().stop();
+        this.targetSubLevel = null;
+        this.targetLocalPos = null;
     }
 
     private void retargetIfBetterOptionExists() {
@@ -119,7 +137,7 @@ public class SubLevelMeleeAttackGoal extends Goal {
                 this.mob.position(), this.searchRadius, level.getGameTime(),
                 () -> SubLevelInteraction.findNearestBlock(level, this.mob.position(), this.searchRadius)
         );
-        if (found.isEmpty()) return;
+        if (found.isEmpty() || !MechTargeting.isAttackable(level, found.get().subLevel())) return;
 
         SubLevel newSubLevel = found.get().subLevel();
         BlockPos newLocalPos = found.get().localPos();

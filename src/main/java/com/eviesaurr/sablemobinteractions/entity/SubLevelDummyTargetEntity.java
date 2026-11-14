@@ -1,6 +1,8 @@
 package com.eviesaurr.sablemobinteractions.entity;
 
 import com.eviesaurr.sablemobinteractions.sublevel.BlockBreakTracker;
+import com.eviesaurr.sablemobinteractions.health.MechTargeting;
+import net.minecraft.server.level.ServerLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
@@ -45,6 +47,11 @@ public class SubLevelDummyTargetEntity extends Mob {
         if (this.level().isClientSide() || this.targetSubLevel == null || this.targetLocalPos == null) {
             return false;
         }
+        if (!(this.level() instanceof ServerLevel server)
+                || !MechTargeting.isAttackable(server, this.targetSubLevel)) {
+            this.discard();
+            return false;
+        }
         var attacker = source.getEntity();
         BlockBreakTracker.registerHit(this.targetSubLevel, this.targetLocalPos, attacker != null ? attacker : this);
         return true; // absorb the hit - never actually takes damage or dies
@@ -55,7 +62,9 @@ public class SubLevelDummyTargetEntity extends Mob {
         super.tick();
         if (!this.level().isClientSide()) {
             this.lifetimeTicks++;
-            if (this.lifetimeTicks > 200 || this.targetSubLevel == null || this.targetSubLevel.isRemoved()) {
+            if (this.lifetimeTicks > 200 || this.targetSubLevel == null || this.targetSubLevel.isRemoved()
+                    || !(this.level() instanceof ServerLevel server)
+                    || !MechTargeting.isAttackable(server, this.targetSubLevel)) {
                 this.discard();
             }
         }

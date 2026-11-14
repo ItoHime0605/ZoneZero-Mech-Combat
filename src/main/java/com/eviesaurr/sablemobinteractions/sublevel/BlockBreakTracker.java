@@ -2,6 +2,7 @@ package com.eviesaurr.sablemobinteractions.sublevel;
 
 import com.eviesaurr.sablemobinteractions.config.Config;
 import com.eviesaurr.sablemobinteractions.health.MechHealth;
+import com.eviesaurr.sablemobinteractions.health.MechHealthMath;
 import com.eviesaurr.sablemobinteractions.health.WalkerLocator;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import net.minecraft.server.level.ServerLevel;
@@ -18,9 +19,12 @@ public final class BlockBreakTracker {
         if (source == null || !(source.level() instanceof ServerLevel level)) return false;
         var walker = WalkerLocator.resolve(level, section);
         if (walker.isEmpty()) return false;
+        if (!MechHealthMath.attackable(MechHealth.get(level, walker.get()).hp())) return true;
         double attack = source instanceof LivingEntity living
             ? living.getAttributeValue(Attributes.ATTACK_DAMAGE) : 1.0;
-        int damage = Math.max(1, (int) Math.ceil(Math.max(0, attack) * Config.DAMAGE_MULTIPLIER.get()));
+        int damage = Math.min(Config.MAX_DAMAGE_PER_HIT.get(),
+            Math.max(1, (int) Math.ceil(Math.max(0, attack)
+                * Config.DAMAGE_MULTIPLIER.get() * Config.INCOMING_DAMAGE_SCALE.get())));
         MechHealth.Status after = MechHealth.damage(level, walker.get(), damage);
         return after.hp() <= 0;
     }

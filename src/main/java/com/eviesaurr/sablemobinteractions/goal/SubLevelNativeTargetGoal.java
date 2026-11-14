@@ -1,6 +1,7 @@
 package com.eviesaurr.sablemobinteractions.goal;
 
 import com.eviesaurr.sablemobinteractions.ModEntityTypes;
+import com.eviesaurr.sablemobinteractions.health.MechTargeting;
 import com.eviesaurr.sablemobinteractions.entity.SubLevelDummyTargetEntity;
 import com.eviesaurr.sablemobinteractions.sublevel.NearestBlockCache;
 import com.eviesaurr.sablemobinteractions.sublevel.SubLevelInteraction;
@@ -39,7 +40,7 @@ public class SubLevelNativeTargetGoal extends Goal {
                 this.mob.position(), this.searchRadius, level.getGameTime(),
                 () -> SubLevelInteraction.findNearestBlock(level, this.mob.position(), this.searchRadius)
         );
-        if (found.isEmpty()) return false;
+        if (found.isEmpty() || !MechTargeting.isAttackable(level, found.get().subLevel())) return false;
 
         this.targetSubLevel = found.get().subLevel();
         this.targetLocalPos = found.get().localPos();
@@ -50,12 +51,15 @@ public class SubLevelNativeTargetGoal extends Goal {
     public boolean canContinueToUse() {
         return this.dummy != null && this.dummy.isAlive()
                 && this.mob.getTarget() == this.dummy
-                && this.targetSubLevel != null && !this.targetSubLevel.isRemoved();
+                && this.targetSubLevel != null && !this.targetSubLevel.isRemoved()
+                && this.mob.level() instanceof ServerLevel level
+                && MechTargeting.isAttackable(level, this.targetSubLevel);
     }
 
     @Override
     public void start() {
-        if (!(this.mob.level() instanceof ServerLevel level)) return;
+        if (!(this.mob.level() instanceof ServerLevel level)
+                || !MechTargeting.isAttackable(level, this.targetSubLevel)) return;
 
         Vec3 worldPos = SubLevelInteraction.localToWorld(this.targetSubLevel, this.targetLocalPos);
         this.dummy = ModEntityTypes.TARGET_DUMMY.get().create(level);
@@ -84,6 +88,11 @@ public class SubLevelNativeTargetGoal extends Goal {
     @Override
     public void tick() {
         if (this.dummy == null) return;
+        if (!(this.mob.level() instanceof ServerLevel level)
+                || !MechTargeting.isAttackable(level, this.targetSubLevel)) {
+            stop();
+            return;
+        }
 
         double distSqr = this.mob.position().distanceToSqr(this.dummy.position());
         if (distSqr > this.searchRadius * this.searchRadius) {
