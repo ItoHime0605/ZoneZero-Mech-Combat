@@ -11,6 +11,10 @@ public final class Config {
     public static final ModConfigSpec.DoubleValue GENERIC_MONSTER_SEARCH_RADIUS;
     public static final ModConfigSpec.DoubleValue PLAYER_PRESENCE_RANGE;
     public static final ModConfigSpec.DoubleValue DAMAGE_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue INCOMING_DAMAGE_SCALE;
+    public static final ModConfigSpec.IntValue MAX_DAMAGE_PER_HIT;
+    public static final ModConfigSpec.DoubleValue MAX_HP_MULTIPLIER;
+    public static final ModConfigSpec.IntValue ZOMBIE_ATTACK_COOLDOWN_TICKS;
     public static final ModConfigSpec.DoubleValue SLOW_MULTIPLIER;
     public static final ModConfigSpec.IntValue DEFAULT_BLOCK_HP;
     public static final ModConfigSpec.IntValue FALLBACK_FOOT_HP;
@@ -24,6 +28,7 @@ public final class Config {
         b.push("zombie");
         ZOMBIE_SEARCH_RADIUS = b.comment("Vanilla zombie mech search radius.").defineInRange("searchRadius",24.0,1.0,64.0);
         ZOMBIE_ATTACK_RANGE = b.comment("Vanilla zombie melee reach against walker armor.").defineInRange("attackRange",2.0,0.5,8.0);
+        ZOMBIE_ATTACK_COOLDOWN_TICKS = b.comment("Ticks between individual zombie strikes (20 = 1 second).").defineInRange("attackCooldownTicks",20,10,100);
         b.pop();
 
         b.push("undead_revamped");
@@ -32,6 +37,7 @@ public final class Config {
 
         b.push("health");
         DEFAULT_BLOCK_HP = b.comment("HP of each solid leg block without an explicit material entry.").defineInRange("defaultBlockHp",8,0,1000);
+        MAX_HP_MULTIPLIER = b.comment("Multiply total material-based walker HP while preserving saved HP percentage.").defineInRange("maxHpMultiplier",4.0,1.0,20.0);
         FALLBACK_FOOT_HP = b.comment("HP per leg if Sable leg sublevels are not currently available.").defineInRange("fallbackFootHp",60,1,10000);
         MATERIAL_HP = b.comment("Each entry uses registry_id=hp. This is a per BLOCK contribution, not a one-time bonus.")
             .defineList("materialHp", () -> List.of(
@@ -49,7 +55,9 @@ public final class Config {
                 "create:industrial_iron_block=45",
                 "create:brass_block=35"
             ), value -> value instanceof String);
-        DAMAGE_MULTIPLIER = b.comment("Uses enemy ATTACK_DAMAGE (including the server's five-zone buffs).").defineInRange("damageMultiplier",1.0,0.05,20.0);
+        DAMAGE_MULTIPLIER = b.comment("Legacy damage multiplier, kept for existing 0.2.1 configs.").defineInRange("damageMultiplier",1.0,0.05,20.0);
+        INCOMING_DAMAGE_SCALE = b.comment("Additional reduction applied even if damageMultiplier was already saved at 1.0.").defineInRange("incomingDamageScale",0.6,0.05,1.0);
+        MAX_DAMAGE_PER_HIT = b.comment("Hard upper limit of HP lost per single monster hit.").defineInRange("maxDamagePerHit",15,1,1000);
         SLOW_MULTIPLIER = b.comment("Speed multiplier below 20 percent HP; 0.0 means stopped.").defineInRange("slowMultiplier",0.45,0.0,1.0);
         RECALC_TICKS = b.comment("How often loaded leg part materials are recounted.").defineInRange("rescanTicks",200,20,12000);
         REPAIR_AMOUNT = b.comment("HP restored by each successful right click.").defineInRange("repairAmount",30,1,10000);

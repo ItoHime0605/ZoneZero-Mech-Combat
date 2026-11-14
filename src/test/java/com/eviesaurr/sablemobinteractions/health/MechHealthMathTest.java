@@ -4,6 +4,12 @@ package com.eviesaurr.sablemobinteractions.health;
 public final class MechHealthMathTest {
     public static void main(String[] args) {
         eq(MechHealthMath.maxHp(0), 1);
+        eq(MechHealthMath.scaledMaxHp(100, 4.0), 400);
+        eq(MechHealthMath.scaledMaxHp(0, 4.0), 4);
+        eq(MechHealthMath.scaledMaxHp(100000, 4.0), 200000);
+        assertTrue(MechHealthMath.attackable(1));
+        assertTrue(!MechHealthMath.attackable(0));
+        assertTrue(MechHealthMath.attackable(MechHealthMath.repair(0,400,30)));
         eq(MechHealthMath.damage(300, 300, 40), 260);
         eq(MechHealthMath.damage(10, 300, 90), 0);
         eq(MechHealthMath.repair(0, 300, 30), 30);

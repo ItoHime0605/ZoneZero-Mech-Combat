@@ -6,6 +6,15 @@ public final class MechHealthMath {
 
     public static int maxHp(int sum) { return Math.max(1, Math.min(200000, sum)); }
 
+    /** Material HP scaling with saturation at the supported maximum. */
+    public static int scaledMaxHp(int baseHp, double multiplier) {
+        double scaled = Math.ceil(Math.max(1, baseHp) * Math.max(1.0, multiplier));
+        return (int) Math.max(1, Math.min(200000, scaled));
+    }
+
+    /** Broken walkers cannot be selected, chased, or attacked. */
+    public static boolean attackable(int hp) { return hp > 0; }
+
     public static int damage(int hp, int maxHp, int amount) {
         return Math.max(0, Math.min(maxHp, hp) - Math.max(0, amount));
     }

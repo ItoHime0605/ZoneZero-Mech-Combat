@@ -5,7 +5,7 @@ issueTrackerURL = "https://github.com/ItoHime0605/ZoneZero-Mech-Combat/issues"
 
 [[mods]]
 modId = "zonezero_mechcombat"
-version = "0.2.1-alpha"
+version = "0.2.2-alpha"
 displayName = "ZoneZero Mech Combat / 零號禁區・機甲戰鬥"
 authors = "Evie (original Sable Mob Interactions), ZoneZero contributors"
 description = '''Enables zombies to attack Let It Walk! mechs built as Sable sublevels. Experimental.'''

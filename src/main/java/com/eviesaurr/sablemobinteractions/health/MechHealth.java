@@ -110,7 +110,7 @@ public final class MechHealth {
             }
         }
         if (counted == 0) sum = Math.max(1, walker.core().legs.size()) * Config.FALLBACK_FOOT_HP.get();
-        return MechHealthMath.maxHp(sum);
+        return MechHealthMath.scaledMaxHp(sum, Config.MAX_HP_MULTIPLIER.get());
     }
 
     private static Status write(WalkerLocator.Walker walker, int hp, int max) {
