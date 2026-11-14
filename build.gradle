@@ -30,6 +30,19 @@ repositories {
         }
         filter { includeGroup "maven.modrinth" }
     }
+    maven {
+        name = "CurseMaven"
+        url = "https://cursemaven.com"
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "RyanHCode"
+                url = "https://maven.ryanhcode.dev/releases"
+            }
+        }
+        filter { includeGroup "dev.ryanhcode.sable-companion" }
+    }
 }
 
 base {
@@ -87,12 +100,28 @@ configurations {
 }
 
 dependencies {
-    // User-provided runtime mod JARs are for local compilation only.
-    // Do not commit binary JAR files to GitHub.
-    compileOnly files("libs/sable.jar")
-    compileOnly files("libs/sable-companion.jar")
-    compileOnly files("libs/create.jar")
-    compileOnly files("libs/let_it_walk.jar")
+    // Prefer exact user-provided JARs locally; for GitHub CI resolve published,
+    // unmodified mod dependencies without committing proprietary JARs.
+    if (file("libs/sable.jar").exists()) {
+        compileOnly files("libs/sable.jar")
+    } else {
+        compileOnly "maven.modrinth:T9PomCSv:fg9dTRz9"  // Sable 2.0.6 NeoForge
+    }
+    if (file("libs/sable-companion.jar").exists()) {
+        compileOnly files("libs/sable-companion.jar")
+    } else {
+        compileOnly "dev.ryanhcode.sable-companion:sable-companion-common-1.21.1:1.6.0"
+    }
+    if (file("libs/create.jar").exists()) {
+        compileOnly files("libs/create.jar")
+    } else {
+        compileOnly "maven.modrinth:LNytGWDc:UjX6dr61"  // Create 6.0.10
+    }
+    if (file("libs/let_it_walk.jar").exists()) {
+        compileOnly files("libs/let_it_walk.jar")
+    } else {
+        compileOnly "curse.maven:let-it-walk-1780503:9540966" // Let It Walk! 0.1.5
+    }
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
