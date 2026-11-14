@@ -1,0 +1,23 @@
+name: Shared Mech HP Arithmetic
+on:
+  push:
+    branches: ["main", "develop/**"]
+  pull_request:
+
+jobs:
+  math-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Compile standalone HP logic
+        run: |
+          mkdir -p build/math-test
+          javac -d build/math-test \
+            src/main/java/com/eviesaurr/sablemobinteractions/health/MechHealthMath.java \
+            src/test/java/com/eviesaurr/sablemobinteractions/health/MechHealthMathTest.java
+      - name: Verify HP, damage, repair, speed and spark thresholds
+        run: java -cp build/math-test com.eviesaurr.sablemobinteractions.health.MechHealthMathTest
