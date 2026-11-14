@@ -39,3 +39,17 @@ javac -d build/classes src/main/java/zonezero/mechcombat/capsule/CapsuleLedger.j
 java -cp build/classes zonezero.mechcombat.capsule.CapsuleLedgerTest
 java -cp build/classes zonezero.mechcombat.capsule.CapsuleDiskStoreTest
 ```
+
+## 2026-11-14 — 0.3.1-alpha ToolsPreview TEST
+
+實作：
+- 新增 `mech_capsule` 物品與 32×32 原創材質，安全預覽模式：目前右鍵僅顯示提示，不會拆機甲、收納或部署。
+- 保留既有 `repair_tool` ID；改為無耐久、右鍵持續動作、每 60 ticks +150 HP、最遠 1.5 格，使用 BRUSH 及每 12 ticks 揮手作為棘輪動作預覽。
+- 加入獨立創造分頁「零號禁區・機甲戰鬥」及原創橘黑徽章，收納器與板手皆可從分頁取得。
+- 既有殭屍攻擊、HP、HUD、踩踏類別不更動。
+- 新增獨立開發用收納政策：4,096 blocks / 32 SubLevels / 32 blocks per axis / 16 MiB archive，部署前不可覆蓋世界方塊。
+- 已通過純 Java 測試：維修 10、交易 21、磁碟 7、收納／空間 14，合計 52 個斷言。JAR 只完成離線編譯與 ZIP 結構檢查，尚未於 NeoForge 實際遊戲啟動驗證。
+
+⚠️ **尚未完成地上收納器 GUI、可用的多 SubLevel 收納／還原、真正客製的轉螺絲手部骨骼動畫；不可把本階段稱為完整收納模組。**
+
+開發原始碼與測試包已作為本次對話附件交付，GitHub 本分支目前記錄設計與驗證進度，尚未同步所有生成的 Java source。
