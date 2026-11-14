@@ -15,6 +15,11 @@ public final class MechHealthMath {
     /** Broken walkers cannot be selected, chased, or attacked. */
     public static boolean attackable(int hp) { return hp > 0; }
 
+    /** True when a hit can register after the previous shared-walker hit. */
+    public static boolean canTakeSharedHit(long now, long last, int grace) {
+        return grace <= 0 || now < last || now - last >= grace;
+    }
+
     public static int damage(int hp, int maxHp, int amount) {
         return Math.max(0, Math.min(maxHp, hp) - Math.max(0, amount));
     }

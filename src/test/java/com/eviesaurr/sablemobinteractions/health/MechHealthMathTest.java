@@ -8,6 +8,10 @@ public final class MechHealthMathTest {
         eq(MechHealthMath.scaledMaxHp(0, 4.0), 4);
         eq(MechHealthMath.scaledMaxHp(100000, 4.0), 200000);
         assertTrue(MechHealthMath.attackable(1));
+        assertTrue(!MechHealthMath.canTakeSharedHit(105, 100, 6));
+        assertTrue(MechHealthMath.canTakeSharedHit(106, 100, 6));
+        assertTrue(MechHealthMath.canTakeSharedHit(101, 100, 0));
+        assertTrue(MechHealthMath.canTakeSharedHit(1, 999, 6));
         assertTrue(!MechHealthMath.attackable(0));
         assertTrue(MechHealthMath.attackable(MechHealthMath.repair(0,400,30)));
         eq(MechHealthMath.damage(300, 300, 40), 260);

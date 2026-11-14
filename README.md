@@ -69,3 +69,7 @@ _編譯成功也不代表 Mixin、客戶端圖層與專用伺服器同時驗收�
 - Changing the defaults does not overwrite the existing `health.damageMultiplier` and `health.materialHp` values in the user's existing TOML.
 
 **Upgrade note:** back up your world and configuration before updating the client and server JAR. This is a compile-tested experimental mod, not yet validated in live multiplayer.
+
+### 0.2.2 swarm protection
+
+A **shared 6-tick grace period** has been added to the walker itself (`health.sharedHitGraceTicks`). This caps the *aggregate* rate of valid melee hits across a crowd of zombies; it does not alter their native damage to players. The last accepted hit tick is stored in the same Sable user-data tag as HP, and repairs above 0 HP remain possible.

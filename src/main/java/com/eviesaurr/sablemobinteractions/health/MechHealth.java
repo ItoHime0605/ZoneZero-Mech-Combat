@@ -124,6 +124,17 @@ public final class MechHealth {
 
     public static Status damage(ServerLevel level, WalkerLocator.Walker walker, int amount) {
         Status old = get(level, walker);
+        if (!MechHealthMath.attackable(old.hp()) || amount <= 0) return old;
+        CompoundTag data = root(walker.body());
+        CompoundTag tag = data.getCompound(TAG);
+        long now = level.getGameTime();
+        if (tag.contains("LastDamageTick")
+                && !MechHealthMath.canTakeSharedHit(now, tag.getLong("LastDamageTick"),
+                    Config.SHARED_HIT_GRACE_TICKS.get())) {
+            return old;
+        }
+        tag.putLong("LastDamageTick", now);
+        data.put(TAG, tag);
         return write(walker, MechHealthMath.damage(old.hp(), old.maxHp(), amount), old.maxHp());
     }
 
