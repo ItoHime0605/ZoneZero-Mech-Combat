@@ -61,3 +61,11 @@ java -cp build/classes zonezero.mechcombat.capsule.CapsuleDiskStoreTest
 - Intended: apply server-validated gun hit on **only** Sable sub-levels belonging to `let_it_walk:walker_core`, resolve through `WalkerLocator`, then call `MechHealth.damage` once per projectile / walker to the shared HP pool; reject duplicate hits, inactive/broken mechs, self/ally fire if configured; preserve 6 tick hit cooldown semantics and include a configurable incoming gun damage multiplier and explosive rules.
 - Important unknown requiring in-game verification: whether moving Sable sub-level impacts emit `AmmoHitBlockEvent` (TaCZ only fires it in its `EntityKineticBullet.onHitBlock` path). Do not assume static-world block hit callbacks include physical moving mech geometry; consider Sable raycast against sub-levels if not.
 - **Do not ship or advertise working gun damage until integration & actual TaCZ NPC firing tests succeed**. Regression checks: distinct shots, shotgun pellets, burst fire, piercing ammo, NPC vs player/ally shooter, explosive damage, unloaded/reloading mech, already-dead mech, and performance.
+
+
+## 2026-11-14 — 0.3.2-alpha-Armor14-TEST
+- 機甲獲得固定 14 點護甲值、0 護甲韌性，採 Minecraft vanilla damage absorption，套用在共用 HP 系統的 `MechHealth.damage`，不更動 HP 上限及其他戰鬥邏輯。
+- 現有敵對近戰傷害走此入口，傷害先被裝甲吸收，整數 HP 向上取整且正數傷害至少扣 1。
+- 透過 `MechArmor.mitigate(int)` 插入唯一共同的扣血呼叫點；原 0.3.1 其餘 classes 與資產完全保留。
+- 離線數值測試共 200,014 斷言通過、JAR ZIP 校驗成功，尚未有完整 NeoForge 遊戲啟動驗證。
+- **TaCZ 射擊移動中的 Sable 機甲尚未整合，不能聲稱已可由 NPC 子彈造成傷害。** 未來需將真實槍彈命中導流到 `MechHealth.damage` 後才會自動套用同套裝甲。
