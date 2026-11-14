@@ -1,0 +1,19 @@
+{
+  "zonezero_mechcombat.configuration.zombie.searchRadius": "殭屍搜尋機甲的距離",
+  "zonezero_mechcombat.configuration.zombie.attackRange": "殭屍攻擊機甲的距離",
+  "zonezero_mechcombat.configuration.undead_revamped.searchRadius": "禍亂亡靈搜尋機甲的距離",
+  "zonezero_mechcombat.configuration.general.playerPresenceRange": "玩家在機甲附近的檢查距離",
+  "item.zonezero_mechcombat.repair_tool": "機甲維修工具",
+  "message.zonezero_mechcombat.no_mech": "附近沒有可維修的步行機甲。",
+  "message.zonezero_mechcombat.full": "機甲已經完好，無需維修。",
+  "message.zonezero_mechcombat.repaired": "機甲維修完成：%s / %s HP",
+  "zonezero_mechcombat.configuration.health": "機甲結構完整度",
+  "zonezero_mechcombat.configuration.health.defaultBlockHp": "未指定材質的每格生命值",
+  "zonezero_mechcombat.configuration.health.fallbackFootHp": "無法讀取足部結構時的每條腿生命值",
+  "zonezero_mechcombat.configuration.health.materialHp": "各材質每格增加的最大 HP",
+  "zonezero_mechcombat.configuration.health.damageMultiplier": "怪物攻擊轉換為機甲傷害的倍率",
+  "zonezero_mechcombat.configuration.health.rescanTicks": "重新計算機甲結構的間隔（tick）",
+  "zonezero_mechcombat.configuration.health.repairAmount": "維修工具每次恢復的生命值",
+  "zonezero_mechcombat.configuration.health.repairRange": "維修工具的有效距離",
+  "zonezero_mechcombat.configuration.health.slowMultiplier": "生命值低於 20% 時的移速倍率"
+}

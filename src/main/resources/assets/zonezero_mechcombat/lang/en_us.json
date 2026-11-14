@@ -1,0 +1,19 @@
+{
+  "zonezero_mechcombat.configuration.zombie.searchRadius": "Zombie search range",
+  "zonezero_mechcombat.configuration.zombie.attackRange": "Zombie attack range",
+  "zonezero_mechcombat.configuration.undead_revamped.searchRadius": "Undead Revamped search range",
+  "zonezero_mechcombat.configuration.general.playerPresenceRange": "Player presence guard range",
+  "item.zonezero_mechcombat.repair_tool": "Mech Repair Tool",
+  "message.zonezero_mechcombat.no_mech": "No repairable walker mech nearby.",
+  "message.zonezero_mechcombat.full": "The mech is already fully repaired.",
+  "message.zonezero_mechcombat.repaired": "Walker repaired: %s / %s HP",
+  "zonezero_mechcombat.configuration.health": "Mech structure health",
+  "zonezero_mechcombat.configuration.health.defaultBlockHp": "HP per unlisted solid block",
+  "zonezero_mechcombat.configuration.health.fallbackFootHp": "HP per leg if foot segments cannot be read",
+  "zonezero_mechcombat.configuration.health.materialHp": "Maximum HP contribution per material block",
+  "zonezero_mechcombat.configuration.health.damageMultiplier": "Damage multiplier for mob attacks against mech HP",
+  "zonezero_mechcombat.configuration.health.rescanTicks": "Walker structure HP rescan interval (ticks)",
+  "zonezero_mechcombat.configuration.health.repairAmount": "HP restored per tool use",
+  "zonezero_mechcombat.configuration.health.repairRange": "Repair tool effective range",
+  "zonezero_mechcombat.configuration.health.slowMultiplier": "Movement speed below 20% HP"
+}

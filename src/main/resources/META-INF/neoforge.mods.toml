@@ -1,0 +1,49 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/ItoHime0605/ZoneZero-Mech-Combat/issues"
+
+[[mods]]
+modId = "zonezero_mechcombat"
+version = "0.2.3-alpha"
+displayName = "ZoneZero Mech Combat / 零號禁區・機甲戰鬥"
+authors = "Evie (original Sable Mob Interactions), ZoneZero contributors"
+description = '''Enables zombies to attack Let It Walk! mechs built as Sable sublevels. Experimental.'''
+
+[[dependencies.zonezero_mechcombat]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.zonezero_mechcombat]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.zonezero_mechcombat]]
+modId = "sable"
+type = "required"
+versionRange = "[2.0,3.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "zonezero_mechcombat.mixins.json"
+
+[[dependencies.zonezero_mechcombat]]
+modId = "create"
+type = "required"
+versionRange = "[6.0.10,6.1.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.zonezero_mechcombat]]
+modId = "let_it_walk"
+type = "required"
+versionRange = "[0.1.5,)"
+ordering = "AFTER"
+side = "BOTH"
