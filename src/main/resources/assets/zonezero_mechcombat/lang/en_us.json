@@ -2,7 +2,6 @@
   "zonezero_mechcombat.configuration.zombie.searchRadius": "Zombie search range",
   "zonezero_mechcombat.configuration.zombie.attackRange": "Zombie attack range",
   "zonezero_mechcombat.configuration.undead_revamped.searchRadius": "Undead Revamped search range",
-  "zonezero_mechcombat.configuration.block_breaking.baseHitsToBreak": "Hits required to break armor blocks",
   "zonezero_mechcombat.configuration.general.playerPresenceRange": "Player presence guard range",
   "item.zonezero_mechcombat.repair_tool": "Mech Repair Tool",
   "message.zonezero_mechcombat.no_mech": "No repairable walker mech nearby.",

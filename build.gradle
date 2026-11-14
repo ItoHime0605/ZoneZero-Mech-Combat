@@ -177,3 +177,12 @@ idea {
         downloadJavadoc = true
     }
 }
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes(
+            'Implementation-Title': project.mod_id,
+            'Implementation-Version': project.mod_version
+        )
+    }
+}

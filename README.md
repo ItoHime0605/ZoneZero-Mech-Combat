@@ -8,7 +8,7 @@
 
 ## 開發狀態
 
-**v0.2 共用機甲 HP 原始碼已加入，但尚未提供可安裝的 JAR。** 此分支未經 Gradle 編譯與遊戲實測，請勿放入正式伺服器。詳見 [BUILDING.md](BUILDING.md)。
+**v0.2 共用機甲 HP 已成功通過 NeoForge Gradle 編譯，並產生實驗性 JAR；尚未進行遊戲實測。** 此分支未經 Gradle 編譯與遊戲實測，請勿放入正式伺服器。詳見 [BUILDING.md](BUILDING.md)。
 
 ### 目標
 
@@ -40,7 +40,7 @@
 
 每條腿所有已載入的 Sable 子結構方塊都會累加最大 HP，包含一般足、噴射足、攀爬足、鉸鏈及材質方塊。不同材質可透過 `config/zonezero_mechcombat-common.toml` 的 `health.materialHp` 設定。**不計算駕駛座或機身方塊**；攻擊任何屬於同一機甲的段落皆扣同一份 HP。拆裝／增減零件會按原有 HP 百分比重新換算，不會免費修好機甲。
 
-這是待編譯原始碼。特別需要遊戲內驗證：
+已通過 Java 21 + NeoForge Gradle 編譯，但仍需要遊戲內驗證：
 
 - Sable 多個活動子結構的識別和 HP 存檔
 - 動態方塊的滑鼠右鍵是否能觸發維修工具

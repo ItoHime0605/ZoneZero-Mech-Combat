@@ -32,6 +32,11 @@ public final class RepairToolItem extends Item {
             return true;
         }
         var repaired = MechHealth.repair(server, walker, Config.REPAIR_AMOUNT.get());
+        if (status.hp() == 0 && repaired.hp() > 0) {
+            // Restored mechs are controllable again after emergency repair.
+            walker.core().parked = false;
+            walker.core().syncToClients();
+        }
         if (!sp.getAbilities().instabuild) {
             stack.hurtAndBreak(1, sp, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         }

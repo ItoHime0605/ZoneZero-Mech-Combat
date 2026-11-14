@@ -2,7 +2,6 @@
   "zonezero_mechcombat.configuration.zombie.searchRadius": "殭屍搜尋機甲的距離",
   "zonezero_mechcombat.configuration.zombie.attackRange": "殭屍攻擊機甲的距離",
   "zonezero_mechcombat.configuration.undead_revamped.searchRadius": "禍亂亡靈搜尋機甲的距離",
-  "zonezero_mechcombat.configuration.block_breaking.baseHitsToBreak": "每個裝甲方塊承受的攻擊次數",
   "zonezero_mechcombat.configuration.general.playerPresenceRange": "玩家在機甲附近的檢查距離",
   "item.zonezero_mechcombat.repair_tool": "機甲維修工具",
   "message.zonezero_mechcombat.no_mech": "附近沒有可維修的步行機甲。",

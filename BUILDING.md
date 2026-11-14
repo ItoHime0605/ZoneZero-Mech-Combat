@@ -1,6 +1,6 @@
 # Building ZoneZero Mech Combat (unverified)
 
-**This is an experimental source branch, not an installable release.** Requires Java 21, Gradle and access to the NeoForge / Minecraft dependency repositories.
+**A Gradle prototype JAR now builds successfully, but this is not a stable or gameplay-tested release.** Requires Java 21, Gradle and access to the NeoForge / Minecraft dependency repositories.
 
 For local compilation, place the original mod files in `libs/` as:
 
@@ -26,7 +26,7 @@ Run `gradle build` from this repository with the NeoForge ModDev environment. On
 - [x] Zero-HP movement guard (Mixin source)
 - [x] Repair item registration, right-click repair and recipe (source)
 - [x] Original upstream MIT license + NOTICE retained
-- [ ] NeoForge / Gradle compile successful
+- [x] NeoForge / Gradle compile successful (GitHub Actions)
 - [ ] Mixin successfully applied at runtime
 - [ ] Damage and repair independently tested on moving multipart walkers
 - [ ] Multiplayer/saving and performance verified
