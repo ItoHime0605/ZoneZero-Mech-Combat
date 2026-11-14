@@ -20,7 +20,7 @@ public final class MechHudOverlay {
     private MechHudOverlay() {}
 
     public static void registerLayers(RegisterGuiLayersEvent event) {
-        event.registerAbove(VanillaGuiLayers.MOB_EFFECTS, ID, MechHudOverlay::render);
+        event.registerAbove(VanillaGuiLayers.EFFECTS, ID, MechHudOverlay::render);
     }
 
     private static void render(GuiGraphics gui, DeltaTracker tick) {
