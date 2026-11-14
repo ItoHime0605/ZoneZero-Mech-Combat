@@ -31,6 +31,20 @@ public final class WalkerLocator {
         return Optional.empty();
     }
 
+    /** Exact walker being piloted (never substitute another nearby vehicle). */
+    public static Optional<Walker> byCore(ServerLevel level, WalkerCoreBlockEntity target) {
+        if (target == null || !target.isAssembled()) return Optional.empty();
+        var container = SubLevelContainer.getContainer(level);
+        if (container == null) return Optional.empty();
+        for (SubLevel section : container.getAllSubLevels()) {
+            if (!(section instanceof ServerSubLevel body) || body.isRemoved()) continue;
+            for (var actor : body.getPlot().getBlockEntityActors()) {
+                if (actor == target) return Optional.of(new Walker(body, target));
+            }
+        }
+        return Optional.empty();
+    }
+
     public static boolean containsLegSection(WalkerCoreBlockEntity core, UUID sectionId) {
         for (LegRuntime leg : core.legs) {
             if (leg.built != null && leg.built.segments.contains(sectionId)) return true;

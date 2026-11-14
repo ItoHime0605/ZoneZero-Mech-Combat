@@ -1,6 +1,7 @@
 package com.eviesaurr.sablemobinteractions;
 
-import net.minecraft.client.Minecraft;
+import com.eviesaurr.sablemobinteractions.client.MechHudOverlay;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -14,9 +15,10 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @EventBusSubscriber(modid = SableMobInteractions.MOD_ID, value = Dist.CLIENT)
 public class SableMobInteractionsClient {
-    public SableMobInteractionsClient(ModContainer container) {
+    public SableMobInteractionsClient(IEventBus modEventBus, ModContainer container) {
 
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        modEventBus.addListener(MechHudOverlay::registerLayers);
     }
 
     @SubscribeEvent

@@ -18,6 +18,7 @@ jobs:
           mkdir -p build/math-test
           javac -d build/math-test \
             src/main/java/com/eviesaurr/sablemobinteractions/health/MechHealthMath.java \
+            src/main/java/com/eviesaurr/sablemobinteractions/health/MechHudColors.java \
             src/test/java/com/eviesaurr/sablemobinteractions/health/MechHealthMathTest.java
       - name: Verify HP, damage, repair, speed and spark thresholds
         run: java -cp build/math-test com.eviesaurr.sablemobinteractions.health.MechHealthMathTest

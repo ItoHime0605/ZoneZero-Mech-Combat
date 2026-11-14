@@ -21,6 +21,7 @@ public class SableMobInteractions {
         ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         modEventBus.addListener(this::registerAttributes);
+        modEventBus.addListener(com.eviesaurr.sablemobinteractions.network.ModNetworking::register);
     }
 
     private void registerAttributes(net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent event) {

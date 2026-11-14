@@ -4,7 +4,8 @@
   "package": "com.eviesaurr.sablemobinteractions.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "WalkerBrainMixin"
+    "WalkerBrainMixin",
+    "WalkerControlPayloadMixin"
   ],
   "injectors": {
     "defaultRequire": 1

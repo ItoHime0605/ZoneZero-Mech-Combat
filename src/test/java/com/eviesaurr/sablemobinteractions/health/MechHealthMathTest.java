@@ -15,7 +15,16 @@ public final class MechHealthMathTest {
         assertTrue(!MechHealthMath.slowed(60, 300));
         assertTrue(MechHealthMath.slowed(59, 300));
         assertTrue(MechHealthMath.disabled(0));
-        System.out.println("MechHealthMath: ALL TESTS PASSED");
+        // HUD colors: green >75%, yellow >50%, orange >20%, red <=20%.
+        eq(MechHudColors.index(100,100), 0);
+        eq(MechHudColors.index(76,100), 0);
+        eq(MechHudColors.index(75,100), 1);
+        eq(MechHudColors.index(51,100), 1);
+        eq(MechHudColors.index(50,100), 2);
+        eq(MechHudColors.index(21,100), 2);
+        eq(MechHudColors.index(20,100), 3);
+        eq(MechHudColors.index(0,100), 3);
+        System.out.println("MechHealthMath + HUD colors: ALL TESTS PASSED");
     }
     private static void eq(int a, int b) { if (a != b) throw new AssertionError(a+" != "+b); }
     private static void assertTrue(boolean yes) { if (!yes) throw new AssertionError(); }
