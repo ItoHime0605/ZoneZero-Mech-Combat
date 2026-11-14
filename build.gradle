@@ -186,3 +186,10 @@ tasks.named('jar', Jar).configure {
         )
     }
 }
+
+
+tasks.named('jar', Jar).configure {
+    // Preserve original Evie MIT copyright notice in every redistributed JAR.
+    from('LICENSE') { into 'META-INF' }
+    from('NOTICE.md') { into 'META-INF' }
+}
