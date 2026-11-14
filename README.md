@@ -57,3 +57,15 @@
 - 這是獨立顯示 UI，不會調整殭屍傷害、裝甲材質 HP 或維修量。
 
 _編譯成功也不代表 Mixin、客戶端圖層與專用伺服器同時驗收完成，需遊戲實測。_
+
+## v0.2.2-alpha — Zombie swarm durability and 0-HP target fix
+
+- Material-based max HP is now **4×** (new `health.maxHpMultiplier=4.0`), retaining any existing per-block material values. Previously damaged walkers keep their HP *percentage* when migrated.
+- Incoming hit damage is additionally multiplied by **0.6** (new `health.incomingDamageScale`), with a **15 HP cap per hit** (new `health.maxDamagePerHit`).
+- Zombie attack cooldown is now **20 ticks** instead of 10 (new `zombie.attackCooldownTicks`).
+- **HP 0 disables mob aggression to that walker**: search, cached target selection, ongoing goals, navigation, native dummy targets and damage handler all check remaining HP.
+- Once a player repairs the mech above 0 HP, it can be targeted normally again.
+- No changes to zombie health, damage against players, spawning, five-zone difficulty scaling, or protected base zones.
+- Changing the defaults does not overwrite the existing `health.damageMultiplier` and `health.materialHp` values in the user's existing TOML.
+
+**Upgrade note:** back up your world and configuration before updating the client and server JAR. This is a compile-tested experimental mod, not yet validated in live multiplayer.
