@@ -53,3 +53,11 @@ java -cp build/classes zonezero.mechcombat.capsule.CapsuleDiskStoreTest
 ⚠️ **尚未完成地上收納器 GUI、可用的多 SubLevel 收納／還原、真正客製的轉螺絲手部骨骼動畫；不可把本階段稱為完整收納模組。**
 
 開發原始碼與測試包已作為本次對話附件交付，GitHub 本分支目前記錄設計與驗證進度，尚未同步所有生成的 Java source。
+
+
+## TaCZ 1.2.0 NPC bullet damage — integration requirement (2026-11-14)
+- **Current 0.3.1 status: NOT IMPLEMENTED.** Bytecode review: `SubLevelDummyTargetEntity.hurt(DamageSource,float)` delegates to `BlockBreakTracker.registerHit(subLevel,localPos,attacker)`, which uses the attacking entity's `Attributes.ATTACK_DAMAGE` rather than the TaCZ bullet's float damage; this does **not** establish correct ranged weapon damage.
+- Exact user build inspected: `tacz-neoforge-1.21.1-1.2.0-ZoneZeroBalance-TagFix(3)(4).jar`; TaCZ exposes `com.tacz.guns.api.event.server.AmmoHitBlockEvent` (with `getAmmo()`, `getHitResult()`, `getLevel()`), `EntityHurtByGunEvent.Pre` (with `getBullet()`, `getHurtEntity()`, `getBaseAmount()`), and `EntityKineticBullet.getDamage(Vec3)`.
+- Intended: apply server-validated gun hit on **only** Sable sub-levels belonging to `let_it_walk:walker_core`, resolve through `WalkerLocator`, then call `MechHealth.damage` once per projectile / walker to the shared HP pool; reject duplicate hits, inactive/broken mechs, self/ally fire if configured; preserve 6 tick hit cooldown semantics and include a configurable incoming gun damage multiplier and explosive rules.
+- Important unknown requiring in-game verification: whether moving Sable sub-level impacts emit `AmmoHitBlockEvent` (TaCZ only fires it in its `EntityKineticBullet.onHitBlock` path). Do not assume static-world block hit callbacks include physical moving mech geometry; consider Sable raycast against sub-levels if not.
+- **Do not ship or advertise working gun damage until integration & actual TaCZ NPC firing tests succeed**. Regression checks: distinct shots, shotgun pellets, burst fire, piercing ammo, NPC vs player/ally shooter, explosive damage, unloaded/reloading mech, already-dead mech, and performance.
